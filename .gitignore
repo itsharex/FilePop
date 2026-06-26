@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode and Swift build output
+DerivedData/
+build/
+.build/
+*.xcresult
+*.xcarchive
+*.xcuserstate
+xcuserdata/
+
+# Distribution artifacts
+dist/
+*.app
+*.dmg
+*.zip
+
+# Signing material and local credentials
+*.cer
+*.key
+*.p12
+*.pem
+*.mobileprovision
+*.provisionprofile
+.env
+.env.*
+
+# Local preview images
+filepop-icon-preview.png
+filepop-icon-size-preview.png
