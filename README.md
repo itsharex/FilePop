@@ -1,67 +1,69 @@
-# FilePop
+<p align="center">
+  <img src="./FilePop/Assets.xcassets/AppIcon.appiconset/FilePopIcon-256.png" width="128" alt="FilePop 图标" />
+</p>
 
-FilePop is a native macOS Finder enhancement app. Version 1 focuses on three Finder background right-click actions:
+<h1 align="center">FilePop</h1>
 
-- New File
-- Open Terminal Here
-- Copy Folder Path
+<p align="center">
+  轻量、原生、克制的 macOS Finder 右键增强工具
+</p>
 
-The app runs as a menu bar utility and ships a Finder Sync extension. The menu bar settings window controls the new-file mode and the template list shared with the extension.
+<p align="center">
+  <a href="https://github.com/LQF-dev/FilePop/releases/download/v1.0-1/FilePop-1.0-1-macOS.dmg">
+    <strong>下载 FilePop 1.0-1</strong>
+  </a>
+</p>
 
-## Requirements
+---
 
-- macOS 13+
-- Xcode 26.5 was used for the initial project setup
-- A Developer ID Application certificate and notarization are required for a public GitHub DMG that opens normally on other people's Macs.
+## 项目简介
 
-## Build
+FilePop 是一个专注于 Finder 当前文件夹的 macOS 右键增强工具。
 
-```sh
-xcodebuild -project FilePop.xcodeproj \
-  -scheme FilePop \
-  -configuration Release \
-  -destination 'platform=macOS' \
-  CODE_SIGNING_ALLOWED=NO \
-  build
-```
+它不会弹出额外窗口，也不会重新打开一个新的目录界面，而是把常用操作自然地嵌入到 Finder 原生右键菜单中。
 
-For a real distribution build, set your Apple development team, bundle identifiers, and App Group entitlement in Xcode, then build with signing enabled.
+目前只保留三个最常用的能力：
 
-## Test
+- 新建文件
+- 复制当前文件夹路径
+- 在当前文件夹打开终端
 
-```sh
-xcodebuild -project FilePop.xcodeproj \
-  -scheme FilePopTests \
-  -configuration Debug \
-  -destination 'platform=macOS' \
-  CODE_SIGNING_ALLOWED=NO \
-  test
-```
+## 为什么做这个项目
 
-## GitHub Release Package
+市面上已经有不少右键增强工具，但实际使用时经常会遇到这些问题：
 
-```sh
-Scripts/package_release.sh
-```
+- 基础功能需要付费
+- 右键体验不够原生，经常需要额外窗口或独立界面
+- 没有真正基于当前 Finder 文件夹上下文工作
+- 功能过多，菜单臃肿，反而影响效率和观感
 
-This creates release assets in `dist/`:
+FilePop 想解决的就是这些问题。
 
-- `FilePop-<version>-<build>-macOS.dmg`
-- `FilePop-<version>-<build>-macOS.zip`
-- `SHA256SUMS.txt`
-- release notes
+它不追求大而全，只希望把最常用的 Finder 操作做得更自然、更干净、更贴近系统原生体验。
 
-That unsigned/development-signed package is suitable for local install testing. For public GitHub distribution, create a notarytool keychain profile and build with a Developer ID Application certificate:
+## 核心能力
 
-```sh
-NOTARY_PROFILE=FilePopNotary Scripts/package_release.sh \
-  "Developer ID Application: Your Name (TEAMID)" \
-```
+### 新建文件
 
-macOS Gatekeeper checks downloaded apps from outside the Mac App Store. A DMG that is not Developer ID signed and notarized can still be uploaded to GitHub, but users will see security blocks or need manual bypass steps.
+支持两种模式：
 
-## Finder Extension Notes
+- 手动后缀模式：输入完整文件名，例如 `note.md`、`todo.txt`
+- 模板选择模式：从预设模板中快速创建文件，例如 Markdown、Word、Excel 等
 
-The extension only returns menu items for Finder background context menus, so all actions target the current Finder directory. It monitors `/`, the user home directory, and mounted volumes under `/Volumes` to cover normal local Finder navigation.
+### 复制文件夹路径
 
-After installing or running the app, enable the Finder extension in System Settings. macOS may require relaunching Finder before new contextual menu items appear.
+在 Finder 当前目录右键，即可复制当前文件夹路径，方便粘贴到终端、编辑器、脚本或其他工具中。
+
+### 打开终端
+
+在 Finder 当前目录右键，即可直接从该目录打开终端，减少手动 `cd` 的重复操作。
+
+## 设计原则
+
+FilePop 的设计原则是克制和原生。
+
+- 只保留真正高频的功能
+- 不制造臃肿的右键菜单
+- 不弹出多余的复杂界面
+- 不破坏 Finder 原有操作习惯
+- 尽量让每个操作都发生在当前文件夹上下文中
