@@ -9,8 +9,12 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/LQF-dev/FilePop/releases/download/v1.0-1/FilePop-1.0-1-macOS.dmg">
-    <strong>下载 FilePop 1.0-1</strong>
+  <img alt="小红书 @6975527999" src="https://img.shields.io/badge/%E5%B0%8F%E7%BA%A2%E4%B9%A6-%406975527999-ff2442?style=flat-square&amp;labelColor=333333" />
+</p>
+
+<p align="center">
+  <a href="https://github.com/LQF-dev/FilePop/releases/download/v1.0.1-2/FilePop-1.0.1-2-macOS.dmg">
+    <strong>下载 FilePop 1.0.1-2</strong>
   </a>
 </p>
 
@@ -41,6 +45,22 @@ FilePop 想解决的就是这些问题。
 
 它不追求大而全，只希望把最常用的 Finder 操作做得更自然、更干净、更贴近系统原生体验。
 
+## 下载
+
+- 最新版本：FilePop 1.0.1-2
+- dmg下载：[FilePop-1.0.1-2-macOS.dmg](https://github.com/LQF-dev/FilePop/releases/download/v1.0.1-2/FilePop-1.0.1-2-macOS.dmg)
+
+## 更新记录
+
+### 1.0.1-2
+
+- 修复重复点击设置后，状态栏应用闪退的问题。
+
+### 1.0.1
+
+- 初始发布版本。
+- 支持 Finder 右键新建文件、复制当前文件夹路径、在当前文件夹打开终端。
+
 ## 核心能力
 
 ### 新建文件
@@ -59,6 +79,7 @@ FilePop 想解决的就是这些问题。
 在 Finder 当前目录右键，即可直接从该目录打开终端，减少手动 `cd` 的重复操作。
 
 ## 权限设置
+
 首次使用 FilePop 前，请按以下步骤完成权限授权：
 
 打开 系统设置 > 隐私与安全性 > 辅助功能，点击「+」添加并允许 FilePop.app。
@@ -66,6 +87,22 @@ FilePop 想解决的就是这些问题。
 打开 系统设置 > 登录项与扩展 > Finder 扩展，确保 FilePop 开关处于开启状态。
 
 完成上述设置后，即可在 Finder 中正常使用 FilePop 的右键增强功能。
+
+## 支持范围
+
+- 支持系统：macOS 13.0 到 macOS Tahoe 26 正式版系列（当前 Apple 公开更新到 macOS 26.5.2）
+- 当前发布环境：Xcode 26.6，macOS 26.5 SDK
+- 暂不声明支持：macOS 26.6 beta、macOS 27 beta
+
+FilePop 依赖 macOS Finder Sync 扩展能力，目前主要面向普通本地文件夹中的 Finder 右键菜单增强。
+
+## 功能边界
+
+FilePop 不支持在 OneDrive、Dropbox 等云盘目录中稳定显示 Finder 右键增强菜单。
+
+原因是现代 OneDrive、Dropbox 等云盘客户端使用 Apple File Provider 机制接入 Finder。这类目录由对应云盘客户端管理，例如 OneDrive 目录由 Microsoft OneDrive 管理，Dropbox 目录由 Dropbox 管理。它们会接管自己的 Finder 集成、文件状态和上下文菜单。
+
+FilePop 是第三方 Finder Sync 扩展，不能稳定地把菜单注入到其他应用管理的 File Provider 云盘目录中。因此，云盘目录中的右键菜单是否出现 FilePop，不作为当前版本的支持范围。
 
 ## 设计原则
 
