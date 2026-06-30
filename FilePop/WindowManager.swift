@@ -2,28 +2,33 @@ import AppKit
 import SwiftUI
 
 @MainActor
-final class WindowManager {
+final class WindowManager: NSObject, NSWindowDelegate {
     static let shared = WindowManager()
 
     private var settingsWindow: NSWindow?
     private var onboardingWindow: NSWindow?
 
-    private init() {}
+    private override init() {
+        super.init()
+    }
 
     func showSettings(viewModel: SettingsViewModel) {
         if settingsWindow == nil {
-            settingsWindow = NSWindow(
+            let window = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 760, height: 560),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable],
                 backing: .buffered,
                 defer: false
             )
-            settingsWindow?.title = L10n.t(.settingsTitle)
-            settingsWindow?.contentView = NSHostingView(
+            window.isReleasedWhenClosed = false
+            window.delegate = self
+            window.title = L10n.t(.settingsTitle)
+            window.contentView = NSHostingView(
                 rootView: SettingsView()
                     .environmentObject(viewModel)
             )
-            settingsWindow?.center()
+            window.center()
+            settingsWindow = window
         }
 
         show(window: settingsWindow)
@@ -31,24 +36,39 @@ final class WindowManager {
 
     func showOnboarding(viewModel: SettingsViewModel) {
         if onboardingWindow == nil {
-            onboardingWindow = NSWindow(
+            let window = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 620, height: 420),
                 styleMask: [.titled, .closable],
                 backing: .buffered,
                 defer: false
             )
-            onboardingWindow?.title = L10n.t(.onboarding)
-            onboardingWindow?.contentView = NSHostingView(
+            window.isReleasedWhenClosed = false
+            window.delegate = self
+            window.title = L10n.t(.onboarding)
+            window.contentView = NSHostingView(
                 rootView: OnboardingView {
                     viewModel.completeOnboarding()
                     self.onboardingWindow?.close()
                 }
                 .environmentObject(viewModel)
             )
-            onboardingWindow?.center()
+            window.center()
+            onboardingWindow = window
         }
 
         show(window: onboardingWindow)
+    }
+
+    func windowWillClose(_ notification: Notification) {
+        guard let window = notification.object as? NSWindow else {
+            return
+        }
+
+        if window === settingsWindow {
+            settingsWindow = nil
+        } else if window === onboardingWindow {
+            onboardingWindow = nil
+        }
     }
 
     private func show(window: NSWindow?) {
