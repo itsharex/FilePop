@@ -102,11 +102,26 @@ FilePop 想解决的就是这些问题。
 
 FilePop 依赖 macOS Finder Sync 扩展能力，目前主要面向普通本地文件夹中的 Finder 右键菜单增强。
 
-## 功能边界
+## 文件夹生效说明
 
-FilePop 不支持在 OneDrive、Dropbox 等云盘目录中稳定显示 Finder 右键增强菜单。
+FilePop 默认仅增强当前 macOS 登录用户目录下的普通本地文件夹，例如：
 
-原因是现代 OneDrive、Dropbox 等云盘客户端使用 Apple File Provider 机制接入 Finder。这类目录由对应云盘客户端管理，例如 OneDrive 目录由 Microsoft OneDrive 管理，Dropbox 目录由 Dropbox 管理。它们会接管自己的 Finder 集成、文件状态和上下文菜单。
+```text
+/Users/当前用户名/...
+```
+
+默认不增强外置硬盘、SD 卡等外置卷中的文件夹。
+
+如需在外置硬盘、SD 卡中使用右键新建，可以在 FilePop 设置中开启「外置磁盘增强」。开启后，Finder 侧边栏中的磁盘图标可能被 macOS 替换：
+
+- macOS 15 上可能显示为系统默认图标
+- macOS 26 上可能显示为 FilePop 图标
+
+这是 Finder Sync 扩展和 Finder 侧边栏图标刷新机制导致的系统层行为。不同 macOS 版本的 Finder 缓存和刷新逻辑不同，因此会看到不同的图标表现；当前应用侧无法可靠规避。
+
+FilePop 不支持在 iCloud 云盘、OneDrive、Dropbox 等云盘目录中稳定显示 Finder 右键增强菜单。
+
+原因是这些目录通常由 Apple File Provider 机制接入 Finder，并由对应云盘客户端管理。例如 iCloud 云盘由 Apple 系统服务管理，OneDrive 目录由 Microsoft OneDrive 管理，Dropbox 目录由 Dropbox 管理。它们会接管自己的 Finder 集成、文件状态和上下文菜单。
 
 FilePop 是第三方 Finder Sync 扩展，不能稳定地把菜单注入到其他应用管理的 File Provider 云盘目录中。因此，云盘目录中的右键菜单是否出现 FilePop，不作为当前版本的支持范围。
 
