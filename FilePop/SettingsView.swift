@@ -86,14 +86,26 @@ struct SettingsView: View {
     }
 
     private var footerSection: some View {
-        HStack {
-            Toggle(L10n.t(.launchAtLogin), isOn: Binding(
-                get: { viewModel.launchAtLogin },
-                set: { viewModel.launchAtLogin = $0 }
-            ))
-            Spacer()
-            Button(L10n.t(.resetDefaults)) {
-                viewModel.resetTemplates()
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Toggle(L10n.t(.launchAtLogin), isOn: Binding(
+                    get: { viewModel.launchAtLogin },
+                    set: { viewModel.launchAtLogin = $0 }
+                ))
+                Spacer()
+                Button(L10n.t(.resetDefaults)) {
+                    viewModel.resetTemplates()
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Toggle(L10n.t(.externalVolumeIntegration), isOn: Binding(
+                    get: { viewModel.externalVolumeIntegrationEnabled },
+                    set: { viewModel.externalVolumeIntegrationEnabled = $0 }
+                ))
+                Text(L10n.t(.externalVolumeIntegrationDetail))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
     }

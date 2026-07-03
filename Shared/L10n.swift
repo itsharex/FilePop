@@ -49,6 +49,8 @@ enum L10nKey: String {
     case onboardingStepTwo
     case onboardingStepThree
     case settingsIntro
+    case externalVolumeIntegration
+    case externalVolumeIntegrationDetail
     case loginItemError
     case commandUnavailable
     case templateUnavailable
@@ -113,6 +115,8 @@ enum L10n {
         .onboardingStepTwo: "2. Keep FilePop running from the menu bar.",
         .onboardingStepThree: "3. Right-click Finder background to create files, open Terminal, or copy the folder path.",
         .settingsIntro: "Configure how Finder creates new files and which templates appear in the right-click menu.",
+        .externalVolumeIntegration: "External Disk Enhancement",
+        .externalVolumeIntegrationDetail: "External disks and SD cards are off by default. Enable right-click creation, with possible disk icon replacement.",
         .loginItemError: "FilePop could not update the login item setting.",
         .commandUnavailable: "FilePop could not read the Finder command. Try again from Finder.",
         .templateUnavailable: "The selected template is no longer available."
@@ -167,6 +171,8 @@ enum L10n {
         .onboardingStepTwo: "2. 保持 FilePop 在顶部菜单栏运行。",
         .onboardingStepThree: "3. 在 Finder 空白处右键即可新建文件、打开终端或复制目录路径。",
         .settingsIntro: "配置 Finder 新建文件的方式，以及右键菜单中显示哪些模板。",
+        .externalVolumeIntegration: "外置磁盘增强",
+        .externalVolumeIntegrationDetail: "默认不支持在外置硬盘、SD 卡中创建文件。开启后可右键新建，但磁盘图标可能被替换。",
         .loginItemError: "FilePop 无法更新开机启动设置。",
         .commandUnavailable: "FilePop 无法读取 Finder 命令，请回到 Finder 重试。",
         .templateUnavailable: "选中的模板已不可用。"

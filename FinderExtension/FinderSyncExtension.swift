@@ -1,4 +1,5 @@
 import AppKit
+import Darwin
 import FinderSync
 
 private final class TemplateMenuPayload: NSObject {
@@ -16,8 +17,38 @@ final class FinderSyncExtension: FIFinderSync {
 
     override init() {
         super.init()
-        let directoryURLs = monitoredDirectoryURLs()
-        FIFinderSyncController.default().directoryURLs = directoryURLs
+        updateDirectoryURLs()
+        DistributedNotificationCenter.default().addObserver(
+            self,
+            selector: #selector(refreshDirectoryURLs(_:)),
+            name: AppConstants.settingsDidChangeNotification,
+            object: AppConstants.appName
+        )
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(refreshDirectoryURLs(_:)),
+            name: NSWorkspace.didMountNotification,
+            object: nil
+        )
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(refreshDirectoryURLs(_:)),
+            name: NSWorkspace.didUnmountNotification,
+            object: nil
+        )
+    }
+
+    deinit {
+        DistributedNotificationCenter.default().removeObserver(self)
+        NSWorkspace.shared.notificationCenter.removeObserver(self)
+    }
+
+    @objc private func refreshDirectoryURLs(_ notification: Notification) {
+        updateDirectoryURLs()
+    }
+
+    private func updateDirectoryURLs() {
+        FIFinderSyncController.default().directoryURLs = monitoredDirectoryURLs()
     }
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu? {
@@ -180,7 +211,7 @@ final class FinderSyncExtension: FIFinderSync {
         FilePopDebugLogger.log("Extension open URL=\(url.absoluteString)")
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/open")
-        process.arguments = [url.absoluteString]
+        process.arguments = ["-g", url.absoluteString]
 
         do {
             try process.run()
@@ -196,21 +227,51 @@ final class FinderSyncExtension: FIFinderSync {
 
     private func monitoredDirectoryURLs() -> Set<URL> {
         var urls: Set<URL> = [
-            URL(fileURLWithPath: "/", isDirectory: true),
-            URL(fileURLWithPath: NSHomeDirectory(), isDirectory: true)
+            realUserHomeDirectoryURL()
         ]
 
-        let volumesURL = URL(fileURLWithPath: "/Volumes", isDirectory: true)
-        if let volumes = try? FileManager.default.contentsOfDirectory(
-            at: volumesURL,
-            includingPropertiesForKeys: [.isDirectoryKey],
-            options: [.skipsHiddenFiles]
-        ) {
-            for volume in volumes {
-                urls.insert(volume)
-            }
+        if settings.externalVolumeIntegrationEnabled {
+            urls.formUnion(externalVolumeURLs())
         }
 
         return urls
+    }
+
+    private func realUserHomeDirectoryURL() -> URL {
+        guard
+            let passwd = getpwuid(getuid()),
+            let homeDirectory = passwd.pointee.pw_dir
+        else {
+            return URL(fileURLWithPath: NSHomeDirectory(), isDirectory: true)
+        }
+
+        let path = FileManager.default.string(
+            withFileSystemRepresentation: homeDirectory,
+            length: strlen(homeDirectory)
+        )
+        return URL(fileURLWithPath: path, isDirectory: true)
+    }
+
+    private func externalVolumeURLs() -> Set<URL> {
+        let volumesURL = URL(fileURLWithPath: "/Volumes", isDirectory: true)
+        guard let volumes = try? FileManager.default.contentsOfDirectory(
+            at: volumesURL,
+            includingPropertiesForKeys: [.isDirectoryKey, .isSymbolicLinkKey, .volumeIsInternalKey],
+            options: [.skipsHiddenFiles]
+        ) else {
+            return []
+        }
+
+        return Set(volumes.filter { volume in
+            guard let values = try? volume.resourceValues(
+                forKeys: [.isDirectoryKey, .isSymbolicLinkKey, .volumeIsInternalKey]
+            ) else {
+                return false
+            }
+
+            return values.isDirectory == true &&
+                values.isSymbolicLink != true &&
+                values.volumeIsInternal != true
+        })
     }
 }

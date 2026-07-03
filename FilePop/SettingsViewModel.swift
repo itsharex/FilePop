@@ -44,6 +44,14 @@ final class SettingsViewModel: ObservableObject {
         }
     }
 
+    var externalVolumeIntegrationEnabled: Bool {
+        get { settings.externalVolumeIntegrationEnabled }
+        set {
+            settings.externalVolumeIntegrationEnabled = newValue
+            persist()
+        }
+    }
+
     func addTemplate(displayName: String, fileExtension: String) {
         let nextOrder = (settings.templates.map(\.order).max() ?? -1) + 1
         let template = FileTemplate(
@@ -119,5 +127,9 @@ final class SettingsViewModel: ObservableObject {
 
     private func persist() {
         repository.save(settings)
+        DistributedNotificationCenter.default().post(
+            name: AppConstants.settingsDidChangeNotification,
+            object: AppConstants.appName
+        )
     }
 }

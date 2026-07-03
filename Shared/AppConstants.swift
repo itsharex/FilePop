@@ -5,6 +5,7 @@ enum AppConstants {
     static let appGroupIdentifier = "group.com.filepop.app"
     static let extensionBundleIdentifier = "com.filepop.FilePop.FinderExtension"
     static let settingsJSONKey = "FilePopSettingsJSON"
+    static let settingsDidChangeNotification = Notification.Name("com.filepop.FilePop.settingsDidChange")
     static let urlScheme = "filepop"
 }
 
