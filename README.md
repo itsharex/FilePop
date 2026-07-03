@@ -13,8 +13,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/LQF-dev/FilePop/releases/download/v1.0.1-2/FilePop-1.0.1-2-macOS.dmg">
-    <strong>下载 FilePop 1.0.1-2</strong>
+  <a href="https://github.com/LQF-dev/FilePop/releases/download/v1.0.2-3/FilePop.dmg">
+    <strong>下载 FilePop 1.0.2-3</strong>
   </a>
 </p>
 
@@ -47,10 +47,16 @@ FilePop 想解决的就是这些问题。
 
 ## 下载
 
-- 最新版本：FilePop 1.0.1-2
-- dmg下载：[FilePop-1.0.1-2-macOS.dmg](https://github.com/LQF-dev/FilePop/releases/download/v1.0.1-2/FilePop-1.0.1-2-macOS.dmg)
+- 最新版本：FilePop 1.0.2-3
+- dmg下载：[FilePop.dmg](https://github.com/LQF-dev/FilePop/releases/download/v1.0.2-3/FilePop.dmg)
 
 ## 更新记录
+
+### 1.0.2-3
+
+- 新增外置磁盘增强开关，默认关闭；开启后可在外置硬盘、SD 卡等外置卷中使用右键新建。
+- 外置磁盘增强开启时，Finder 侧边栏磁盘图标可能被 macOS 替换，属于 Finder Sync 扩展机制限制。
+- 修复扩展监听目录在设置变更和外置卷挂载/卸载后不会及时刷新的问题。
 
 ### 1.0.1-2
 
