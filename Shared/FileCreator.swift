@@ -120,6 +120,39 @@ enum FileCreator {
         return "\(validated).\(cleanExtension)"
     }
 
+    @discardableResult
+    static func adaptNewlyCreatedFile(
+        at fileURL: URL,
+        from originalExtension: String?
+    ) throws -> Bool {
+        let finalExtension = FileTemplate.normalizedExtension(fileURL.pathExtension)
+        let normalizedOriginalExtension = originalExtension.map(FileTemplate.normalizedExtension)
+
+        guard finalExtension != (normalizedOriginalExtension ?? "") else {
+            return false
+        }
+
+        if let officeData = OfficeTemplateData.data(for: finalExtension) {
+            do {
+                try officeData.write(to: fileURL, options: .atomic)
+                return true
+            } catch {
+                throw FileCreationError.writeFailed(error.localizedDescription)
+            }
+        }
+
+        guard normalizedOriginalExtension != nil else {
+            return false
+        }
+
+        do {
+            try Data().write(to: fileURL, options: .atomic)
+            return true
+        } catch {
+            throw FileCreationError.writeFailed(error.localizedDescription)
+        }
+    }
+
     static func validateFileName(_ fileName: String) throws -> String {
         let trimmed = fileName.trimmingCharacters(in: .whitespacesAndNewlines)
 

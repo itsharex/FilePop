@@ -13,8 +13,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/LQF-dev/FilePop/releases/download/v1.0.2-3/FilePop.dmg">
-    <strong>下载 FilePop 1.0.2-3</strong>
+  <a href="https://github.com/LQF-dev/FilePop/releases/download/v1.1.0/FilePop-1.1.0-macOS.dmg">
+    <strong>下载 FilePop 1.1.0</strong>
   </a>
 </p>
 
@@ -47,22 +47,29 @@ FilePop 想解决的就是这些问题。
 
 ## 下载
 
-- 最新版本：FilePop 1.0.2-3
-- dmg下载：[FilePop.dmg](https://github.com/LQF-dev/FilePop/releases/download/v1.0.2-3/FilePop.dmg)
+- 最新版本：FilePop 1.1.0
+- dmg下载：[FilePop-1.1.0-macOS.dmg](https://github.com/LQF-dev/FilePop/releases/download/v1.1.0/FilePop-1.1.0-macOS.dmg)
 
 ## 更新记录
 
-### 1.0.2-3
+### 1.1.0（2026-08-05）
+
+- 在桌面新建文件时不再弹出 Finder 文件夹窗口，文件会直接出现在桌面并进入重命名。
+- 移除桌面新建流程中的模拟鼠标点击，避免屏幕闪动。
+- 修复 Word、Excel 和 PowerPoint 文件在桌面重命名后的内容与图标识别。
+- 修复 PowerPoint 模板结构不完整导致 PowerPoint、WPS 无法正常打开的问题。
+
+### 1.0.2-3（2026-07-03）
 
 - 新增外置磁盘增强开关，默认关闭；开启后可在外置硬盘、SD 卡等外置卷中使用右键新建。
 - 外置磁盘增强开启时，Finder 侧边栏磁盘图标可能被 macOS 替换，属于 Finder Sync 扩展机制限制。
 - 修复扩展监听目录在设置变更和外置卷挂载/卸载后不会及时刷新的问题。
 
-### 1.0.1-2
+### 1.0.1-2（2026-06-30）
 
 - 修复重复点击设置后，状态栏应用闪退的问题。
 
-### 1.0.1
+### 1.0.1（2026-06-26）
 
 - 初始发布版本。
 - 支持 Finder 右键新建文件、复制当前文件夹路径、在当前文件夹打开终端。

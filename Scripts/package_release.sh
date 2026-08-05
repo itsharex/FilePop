@@ -84,9 +84,9 @@ fi
 
 VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP_PATH/Contents/Info.plist")"
 BUILD="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_PATH/Contents/Info.plist")"
-DMG_PATH="$DIST_DIR/FilePop-${VERSION}-${BUILD}-macOS.dmg"
-ZIP_PATH="$DIST_DIR/FilePop-${VERSION}-${BUILD}-macOS.zip"
-NOTES_PATH="$DIST_DIR/RELEASE_NOTES-${VERSION}-${BUILD}.md"
+DMG_PATH="$DIST_DIR/FilePop-${VERSION}-macOS.dmg"
+ZIP_PATH="$DIST_DIR/FilePop-${VERSION}-macOS.zip"
+NOTES_PATH="$DIST_DIR/RELEASE_NOTES-${VERSION}.md"
 
 rm -f "$DMG_PATH" "$ZIP_PATH" "$DIST_DIR/SHA256SUMS.txt" "$NOTES_PATH"
 
@@ -99,12 +99,12 @@ ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "$ZIP_PATH"
 )
 
 cat > "$NOTES_PATH" <<EOF_NOTES
-# FilePop ${VERSION} (${BUILD})
+# FilePop ${VERSION}
 
 ## Downloads
 
-- FilePop-${VERSION}-${BUILD}-macOS.dmg: recommended installer.
-- FilePop-${VERSION}-${BUILD}-macOS.zip: fallback archive containing FilePop.app.
+- FilePop-${VERSION}-macOS.dmg: recommended installer.
+- FilePop-${VERSION}-macOS.zip: fallback archive containing FilePop.app.
 - SHA256SUMS.txt: SHA256 checksums for release assets.
 
 ## Install

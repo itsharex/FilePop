@@ -64,4 +64,49 @@ final class FileCreatorTests: XCTestCase {
         XCTAssertEqual(url.pathExtension, "docx")
         XCTAssertGreaterThan(size?.intValue ?? 0, 0)
     }
+
+    func testPowerPointTemplateUsesCompletePresentationPackage() throws {
+        let data = try XCTUnwrap(OfficeTemplateData.data(for: "pptx"))
+
+        XCTAssertGreaterThan(data.count, 9_000)
+        XCTAssertEqual(Array(data.prefix(2)), [0x50, 0x4B])
+    }
+
+    func testManualDesktopRenameToOfficeExtensionWritesValidTemplateData() throws {
+        let url = try FileCreator.createManualFile(named: "draft.xlsx", in: directoryURL)
+
+        let adapted = try FileCreator.adaptNewlyCreatedFile(at: url, from: nil)
+        let data = try Data(contentsOf: url)
+
+        XCTAssertTrue(adapted)
+        XCTAssertEqual(data, OfficeTemplateData.data(for: "xlsx"))
+    }
+
+    func testTemplateDesktopRenameToDifferentOfficeExtensionReplacesTemplateData() throws {
+        let excelTemplate = FileTemplate(displayName: "Excel", fileExtension: "xlsx", order: 0)
+        let originalURL = try FileCreator.createTemplateFile(
+            named: "draft",
+            template: excelTemplate,
+            in: directoryURL
+        )
+        let renamedURL = directoryURL.appendingPathComponent("draft.docx")
+        try FileManager.default.moveItem(at: originalURL, to: renamedURL)
+
+        let adapted = try FileCreator.adaptNewlyCreatedFile(at: renamedURL, from: "xlsx")
+        let data = try Data(contentsOf: renamedURL)
+
+        XCTAssertTrue(adapted)
+        XCTAssertEqual(data, OfficeTemplateData.data(for: "docx"))
+    }
+
+    func testManualDesktopRenameToPlainExtensionKeepsEmptyFile() throws {
+        let url = try FileCreator.createManualFile(named: "notes.md", in: directoryURL)
+
+        let adapted = try FileCreator.adaptNewlyCreatedFile(at: url, from: nil)
+        let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
+        let size = attributes[.size] as? NSNumber
+
+        XCTAssertFalse(adapted)
+        XCTAssertEqual(size?.intValue, 0)
+    }
 }
